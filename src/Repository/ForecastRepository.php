@@ -30,19 +30,7 @@ class ForecastRepository extends ServiceEntityRepository
         return $result;
     }
 
-    public function findByCityAndCountry(string $city, string $country = ''): ?Location
-    {
-        $qb = $this->createQueryBuilder('l')
-            ->andWhere('LOWER(l.name) = LOWER(:city)')
-            ->setParameter('city', trim($city));
 
-        if (trim($country) !== '') {
-            $qb->andWhere('UPPER(l.country) = :country')
-                ->setParameter('country', strtoupper(trim($country)));
-        }
-
-        return $qb->getQuery()->getOneOrNullResult();
-    }
 
 //    /**
 //     * @return Forecast[] Returns an array of Forecast objects
