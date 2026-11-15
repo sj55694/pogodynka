@@ -6,13 +6,36 @@
 {% block title %}Weather in {{ location.name }}, {{ location.country }}{% endblock %}
 
 {% block body %}
-    <main>
-        <h1>Weather in {{ location.name }}, {{ location.country }}</h1>
+    <main class="container py-4">
+        <h1 class="mb-4">Weather in {{ location.name }}, {{ location.country }}</h1>
 
-        <ul>
-            {% for forecast in forecasts %}
-                <li>{{ forecast.date|date('d.m.Y') }}: {{ forecast.temperature }}&deg;C</li>
-            {% endfor %}
-        </ul>
+        {% if forecasts is empty %}
+            <p>No forecast available for this location.</p>
+        {% else %}
+            <div class="table-responsive">
+                <table class="table table-striped table-bordered align-middle">
+                    <thead class="table-dark">
+                        <tr>
+                            <th scope="col">Date</th>
+                            <th scope="col">Temperature</th>
+                            <th scope="col">Humidity</th>
+                            <th scope="col">Air pressure</th>
+                            <th scope="col">Rain probability</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for forecast in forecasts %}
+                            <tr>
+                                <td>{{ forecast.date|date('d.m.Y') }}</td>
+                                <td>{{ forecast.temperature }}&deg;C</td>
+                                <td>{{ forecast.humidity }}%</td>
+                                <td>{{ forecast.airPressure }} hPa</td>
+                                <td>{{ forecast.rainProbability }}%</td>
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% endif %}
     </main>
 {% endblock %}

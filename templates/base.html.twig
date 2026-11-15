@@ -45,11 +45,17 @@
                         <li class="nav-item">
                             <a class="nav-link" href="{{ path('app_location_index') }}">Locations</a>
                         </li>
+                        {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                            <a href="{{ path('app_logout') }}">Logout</a>
+                        {% else %}
+                            <a href="{{ path('app_login') }}">Login</a>
+                        {% endif %}
                     </ul>
                 </div>
             </div>
         </nav>
     {# ai #}
+
         {% block body %}{% endblock %}
     </body>
 </html>

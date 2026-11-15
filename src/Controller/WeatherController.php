@@ -11,6 +11,7 @@ use Symfony\Component\Routing\Attribute\Route;
 final class WeatherController extends AbstractController
 {
     #[Route('/weather', name: 'app_weather_index')]
+    #[IsGranted('ROLE_WEATHER_INDEX')]
     public function index(): Response
     {
         return $this->render('weather/index.html.twig', [
