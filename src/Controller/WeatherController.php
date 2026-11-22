@@ -2,11 +2,13 @@
 
 namespace App\Controller;
 
-use App\Repository\ForecastRepository;
 use App\Repository\LocationRepository;
+use App\Service\WeatherUtil;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Security\Http\Attribute\IsGranted;
+
 
 final class WeatherController extends AbstractController
 {
@@ -27,7 +29,7 @@ final class WeatherController extends AbstractController
     )]
     public function name(
         string $name,
-        ForecastRepository $repository,
+        WeatherUtil $util,
         LocationRepository $locations,
         ?string $country = null,
     ): Response {
@@ -37,9 +39,13 @@ final class WeatherController extends AbstractController
             throw $this->createNotFoundException('Location not found.');
         }
 
+        $forecasts = $country === null
+            ? $util->getWeatherForLocation($location)
+            : $util->getWeatherForCountryAndCity($country, $name);
+
         return $this->render('weather/name.html.twig', [
             'location' => $location,
-            'forecasts' => $repository->findByLocation($location),
+            'forecasts' => $forecasts,
         ]);
     }
 }
